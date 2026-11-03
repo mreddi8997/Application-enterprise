@@ -1,0 +1,9 @@
+version: 0.1
+files:
+  - source: /app.jar
+    destination: /opt/petclinic/
+scripts:
+  AfterDeploy:
+    - location: scripts/restart-and-check.sh
+      timeout: 120
+      runas: root
