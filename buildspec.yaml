@@ -15,39 +15,24 @@ phases:
       - bash ./mvnw -B clean verify
       - snyk test --file=pom.xml --severity-threshold=high
 
-  post_build:
+    post_build:
     commands:
       - |
         set -euo pipefail
-
-        # CodeBuild can enter post_build after an earlier phase fails.
-        if [[ "${CODEBUILD_BUILD_SUCCEEDING:-0}" != "1" ]]; then
-          echo "Build or scan failed. Skipping release upload."
-          exit 1
-        fi
-
-        : "${RELEASE_BUCKET:?Set RELEASE_BUCKET}"
-        commit="${CODEBUILD_RESOLVED_SOURCE_VERSION:?Missing source revision}"
+        [[ "${CODEBUILD_BUILD_SUCCEEDING:-0}" == "1" ]]
 
         shopt -s nullglob
         jars=(target/spring-petclinic-*.jar)
         if [[ ${#jars[@]} -ne 1 ]]; then
-          echo "Expected exactly one Petclinic JAR."
+          echo "Expected exactly one Petclinic JAR." >&2
           exit 1
         fi
 
         mkdir -p target/release
         cp -R deploy/. target/release/
         cp "${jars[0]}" target/release/app.jar
-        (cd target/release && zip -qr ../petclinic.zip .)
 
-        digest="$(sha256sum target/petclinic.zip | cut -d ' ' -f 1)"
-
-        aws s3api put-object \
-          --bucket "$RELEASE_BUCKET" \
-          --key releases/petclinic.zip \
-          --body target/petclinic.zip \
-          --metadata "commit=${commit},sha256=${digest}" \
-          --tagging "application=petclinic&commit=${commit}" \
-          --query VersionId \
-          --output text
+artifacts:
+  base-directory: target/release
+  files:
+    - '**/*'
