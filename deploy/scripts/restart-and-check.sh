@@ -13,4 +13,4 @@ for attempt in {1..30}; do
 done
 
 journalctl -u petclinic.service -n 30 --no-pager >&2
-exi
+exit
