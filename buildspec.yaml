@@ -15,7 +15,7 @@ phases:
       - bash ./mvnw -B clean verify
       - snyk test --file=pom.xml --severity-threshold=high
 
-    post_build:
+  post_build:
     commands:
       - |
         set -euo pipefail
