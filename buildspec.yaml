@@ -31,6 +31,22 @@ phases:
         mkdir -p target/release
         cp -R deploy/. target/release/
         cp "${jars[0]}" target/release/app.jar
+        # Keep one independent, versioned release copy before deploying to DEV.
+        : "${RELEASE_BUCKET:?Set RELEASE_BUCKET in CodeBuild}"
+        : "${CODEBUILD_RESOLVED_SOURCE_VERSION:?Missing source revision}"
+        : "${CODEBUILD_BUILD_NUMBER:?Missing build number}"
+        release_id="${CODEBUILD_RESOLVED_SOURCE_VERSION}-${CODEBUILD_BUILD_NUMBER}"
+        release_key="petclinic/releases/${release_id}/deployment.zip"
+
+        command -v zip >/dev/null || { echo "zip is not installed in the build image" >&2; exit 1; }
+        (cd target/release && zip -qr ../deployment.zip .)
+        aws s3api put-object \
+          --bucket "$RELEASE_BUCKET" \
+          --key "$release_key" \
+          --body target/deployment.zip \
+          --if-none-match "*" \
+          --metadata "git-commit=${CODEBUILD_RESOLVED_SOURCE_VERSION},build-number=${CODEBUILD_BUILD_NUMBER}" >/dev/null
+        echo "Archived release to s3://${RELEASE_BUCKET}/${release_key}"
 
 artifacts:
   base-directory: target/release
