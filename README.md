@@ -27,7 +27,7 @@ If you are using Maven, you can start the application on the command-line as fol
 ```bash
 ./mvnw spring-boot:run
 ```
-With Gradle, the command is as follows:
+With Gradle, the command is as follow:
 
 ```bash
 ./gradlew bootRun
