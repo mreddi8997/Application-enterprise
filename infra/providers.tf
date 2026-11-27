@@ -4,11 +4,19 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 6.0"
+      version = ">= 6.59, < 7.0"
     }
   }
 }
 
 provider "aws" {
-  region = var.aws_region
+  region = "us-east-2"
+
+  default_tags {
+    tags = {
+      Project     = "petclinic"
+      Environment = "prod"
+      ManagedBy   = "Terraform"
+    }
+  }
 }
