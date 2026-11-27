@@ -31,3 +31,7 @@ variable "min_size" {
   type = number
   default = 1
 }
+
+variable "petlinic_sg"
+  type = string
+}
