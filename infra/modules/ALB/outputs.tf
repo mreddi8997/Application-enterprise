@@ -1,6 +1,6 @@
 output "target_group_arn" {
   value      = aws_lb_target_group.petclinic_alb_target_group.arn
-  depends_on = [aws_lb_listener.petclinic_alb_listener]
+  depends_on = [aws_lb_listener.petclinic_alb_listener, aws_lb_listener.petclinic_https_listener]
 }
 
 output "url" {

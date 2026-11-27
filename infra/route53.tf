@@ -10,4 +10,6 @@ resource "aws_route53_record" "petclinic" {
     zone_id                = module.alb.zone_id
     evaluate_target_health = true
   }
+
+  depends_on = [module.alb, module.SG]
 }

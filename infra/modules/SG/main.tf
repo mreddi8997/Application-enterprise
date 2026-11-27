@@ -10,6 +10,11 @@ variable "app_port" {
   type = number
 }
 
+variable "alb_https_enabled" {
+  type    = bool
+  default = false
+}
+
 variable "database_subnet_cidrs" {
   type = list(string)
 }
@@ -26,6 +31,16 @@ resource "aws_vpc_security_group_ingress_rule" "alb_listener" {
   ip_protocol       = "tcp"
   from_port         = var.alb_listener_port
   to_port           = var.alb_listener_port
+}
+
+resource "aws_vpc_security_group_ingress_rule" "alb_https" {
+  count = var.alb_https_enabled ? 1 : 0
+
+  security_group_id = aws_security_group.petclinic_alb_sg.id
+  cidr_ipv4         = "0.0.0.0/0"
+  ip_protocol       = "tcp"
+  from_port         = 443
+  to_port           = 443
 }
 
 resource "aws_security_group" "petclinic_sg" {

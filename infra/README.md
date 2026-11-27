@@ -1,6 +1,6 @@
 # Petclinic development infrastructure
 
-The public HTTP ALB forwards port 80 to Petclinic on port 8080. The Auto Scaling group uses private subnets, and the RDS PostgreSQL instance uses separate database subnets. The instances register with Systems Manager through the VPC's NAT gateway.
+The public ALB forwards traffic to Petclinic on port 8080. Set an existing ACM certificate ARN to serve HTTPS and redirect HTTP clients. The Auto Scaling group uses private subnets, and the RDS PostgreSQL instance uses separate database subnets. The instances register with Systems Manager through the VPC's NAT gateway.
 
 ## Before planning
 
@@ -41,4 +41,14 @@ route53_alias = {
 
 Check that the domain is delegated to this public hosted zone. Terraform creates an `A` alias to the ALB and returns the URL in `petclinic_domain_url`. If the A record already exists, import it into the existing Terraform state before applying. Leave `route53_alias` unset to use the ALB URL directly.
 
-The current lab listener serves HTTP. HTTPS requires an ALB listener on port 443 with an ACM certificate covering the hostname.
+### Reuse an ACM certificate
+
+Add the ARN of your existing **Issued** ACM certificate to the same `infra/terraform.tfvars` file.
+
+```hcl
+alb_certificate_arn = "arn:aws:acm:us-east-2:123456789012:certificate/00000000-0000-0000-0000-000000000000"
+```
+
+The certificate must cover the hostname and be in the same AWS account and region as the ALB. Check the certificate in ACM in **US East (Ohio)** for the current configuration. Setting the ARN enables public port 443 on the ALB and redirects HTTP to HTTPS. The HTTPS listener forwards to the existing Petclinic target group.
+
+If you manage the DNS record separately, set just `alb_certificate_arn` and keep the existing alias directed at this ALB. If a live record points to another ALB, verify the new ALB's listener and target health before switching the record. If Terraform will manage an existing HTTPS listener on this same ALB, import that listener at `module.alb.aws_lb_listener.petclinic_https_listener[0]` before applying.

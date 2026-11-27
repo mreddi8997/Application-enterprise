@@ -85,3 +85,9 @@ variable "vpc_id" {
 variable "alb_security_group_id" {
   type = string
 }
+
+variable "certificate_arn" {
+  description = "Existing ACM certificate ARN for the optional HTTPS listener."
+  type        = string
+  default     = null
+}
