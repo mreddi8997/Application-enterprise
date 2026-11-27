@@ -5,7 +5,7 @@ data "aws_ami" "petclinic_lab" {
 
   filter {
     name   = "name"
-    values = ["var.petclinic_ami_name"]
+    values = [var.petclinic_ami_name]
   }
   
 }
