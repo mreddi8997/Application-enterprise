@@ -2,8 +2,8 @@ resource "aws_lb" "petclinic_alb" {
   name               = "var.petclinic_alb_name"
   internal           = false
   load_balancer_type = "var.load_balancer_type"
-  security_groups    = [aws_security_group.petclinic_alb_sg.id]
-  subnets            = [aws_subnet.public_subnet.id]
+  security_groups    = [var.petclinic_Sg]
+  subnets            = [var.subnet_ids]
 
   enable_deletion_protection = false
 }
@@ -23,7 +23,7 @@ resource "aws_lb_target_group" "petclinic_alb_target_group" {
   name     = "var.petclinic_alb_target_group_name"
   port     = "var.alb_target_group_port"
   protocol = "var.alb_target_group_protocol"
-  vpc_id   = aws_vpc.main.id
+  vpc_id   = var.vpc_id
 
   health_check {
     path                = "var.alb_health_check_path"
