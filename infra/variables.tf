@@ -27,3 +27,28 @@ variable "release_artifact_prefix" {
   type        = string
   default     = "petclinic/"
 }
+
+variable "route53_alias" {
+  description = "Optional public Route 53 A alias for the Petclinic ALB. Use the hosted zone ID and the full DNS record name."
+  type = object({
+    hosted_zone_id = string
+    record_name    = string
+  })
+  default = null
+
+  validation {
+    condition     = var.route53_alias == null ? true : try(trimspace(var.route53_alias.hosted_zone_id) != "" && trimspace(var.route53_alias.record_name) != "", false)
+    error_message = "Set both hosted_zone_id and record_name when configuring a Route 53 alias."
+  }
+}
+
+variable "alb_certificate_arn" {
+  description = "Existing ACM certificate ARN for the public ALB HTTPS listener. Leave unset for HTTP-only operation."
+  type        = string
+  default     = null
+
+  validation {
+    condition     = var.alb_certificate_arn == null || can(regex("^arn:[^:]+:acm:[a-z0-9-]+:[0-9]{12}:certificate/[0-9a-fA-F-]+$", var.alb_certificate_arn))
+    error_message = "Use the ACM certificate ARN for the application hostname."
+  }
+}

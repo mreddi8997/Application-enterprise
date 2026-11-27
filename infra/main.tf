@@ -44,6 +44,7 @@ module "alb" {
   alb_security_group_id = module.SG.alb_security_group_id
   alb_listener_port     = local.alb_listener_port
   alb_target_group_port = local.app_port
+  certificate_arn       = var.alb_certificate_arn
 }
 
 module "ASG" {
@@ -77,6 +78,7 @@ module "SG" {
   alb_listener_port     = local.alb_listener_port
   app_port              = local.app_port
   database_subnet_cidrs = local.database_subnets
+  alb_https_enabled     = var.alb_certificate_arn != null
 }
 
 module "petclinic_secret" {
