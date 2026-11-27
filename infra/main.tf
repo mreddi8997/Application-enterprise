@@ -43,6 +43,6 @@ autoscaling_group_name = module.ASG.autoscaling_group_name
 
 module "SG" {
   source = "./modules/SG"
-
+vpc_id = module.vpc.vpc_id
 
 }
