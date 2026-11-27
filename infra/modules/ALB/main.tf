@@ -10,8 +10,8 @@ resource "aws_lb" "petclinic_alb" {
 
 resource "aws_lb_listener" "petclinic_alb_listener" {
   load_balancer_arn = aws_lb.petclinic_alb.arn
-  port              = "var.alb_listener_port"
-  protocol          = "var.alb_listener_protocol"
+  port              = var.alb_listener_port
+  protocol          = var.alb_listener_protocol
 
   default_action {
     type             = "forward"
@@ -20,7 +20,7 @@ resource "aws_lb_listener" "petclinic_alb_listener" {
 }
 
 resource "aws_lb_target_group" "petclinic_alb_target_group" {
-  name     = "var.petclinic_alb_target_group_name"
+  name     = var.petclinic_alb_target_group_name
   port     = "var.alb_target_group_port"
   protocol = "var.alb_target_group_protocol"
   vpc_id   = var.vpc_id
