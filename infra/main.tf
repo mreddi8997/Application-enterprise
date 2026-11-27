@@ -38,7 +38,7 @@ vpc_zone_identifier = [module.vpc.public_subnet_ids]
 module "cloudwatch" {
   source = "./modules/cloudwatch"
 
-autoscaling_group_name = module.ASG.autoscaling_group_name
+autoscaling_group_name = module.ASG.petclinic_app_asg_name
 }
 
 module "SG" {
