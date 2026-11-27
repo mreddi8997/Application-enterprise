@@ -35,3 +35,7 @@ variable "min_size" {
 variable "petclinic_sg"
   type = string
 }
+
+variable "subnet_ids"
+  type = string
+}
