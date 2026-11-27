@@ -23,7 +23,7 @@ resource "aws_launch_configuration" "petclinic_app" {
   name          = "petclinic_app"
   image_id      = data.aws_ami.petclinic_lab.id
   instance_type = var.instance_type
-  security_groups = [aws_security_group.petclinic_sg.id]
+  security_groups = [var.petclinic_sg]
   iam_instance_profile = data.iam_instance_profile.petclinic_instance_profile.id
   lifecycle {
     create_before_destroy = true
