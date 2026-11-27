@@ -26,7 +26,7 @@ module "ASG" {
   source = "./modules/ASG"
 
 petclinic_sg = module.SG.petclinic_sg.id
-instance_type = var.instance_type
+instance_type = t3.micro
 }
 
 module "cloudwatch" {
