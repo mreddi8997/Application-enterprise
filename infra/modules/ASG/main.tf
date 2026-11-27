@@ -1,6 +1,6 @@
 data "aws_ami" "petclinic_lab" {
   most_recent = true
-  owner_id   = var.aws_account_id
+  owners  = [tostring(var.aws_account_id)]
   
 
   filter {
@@ -11,13 +11,9 @@ data "aws_ami" "petclinic_lab" {
 }
 
 data "iam_instance_profile" "petclinic_instance_profile" {
-  name = "var.petclinic_instance_profile_name"
+  name = var.petclinic_instance_profile_name
 
-  filter {
-    name   = "name"
-    values = ["var.petclinic_instance_profile_name"]
-  }
-}
+
 
 resource "aws_launch_configuration" "petclinic_app" {
   name          = "petclinic_app"
