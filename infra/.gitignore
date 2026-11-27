@@ -1,0 +1,8 @@
+.terraform/
+.terraform.tfstate.lock.info
+*.tfstate
+*.tfstate.*
+*.tfplan
+backend.s3.hcl
+*.tfvars
+*.tfvars.json
