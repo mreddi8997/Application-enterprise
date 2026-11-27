@@ -23,6 +23,7 @@ module "alb" {
 
 subnet_ids = module.vpc.public_subnet_ids
 vpc = module.vpc.vpc_id
+security_groups = [module.SG.petclinic_sg]
 
 }
 
