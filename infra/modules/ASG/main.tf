@@ -31,6 +31,7 @@ resource "aws_launch_configuration" "petclinic_app" {
 }
 
 resource "aws_autoscaling_group" "petclinic_app_asg" {
+  name                 = "petclinic_app_asg" 
   desired_capacity     = var.desired_capacity
   max_size             = var.max_size
   min_size             = var.min_size
@@ -44,4 +45,6 @@ resource "aws_autoscaling_group" "petclinic_app_asg" {
   }
 }
 
-
+output "petclinic_app_asg_name" {
+  value = aws_autoscaling_group.petclinic_app_asg.name
+}
