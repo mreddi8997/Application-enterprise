@@ -32,6 +32,6 @@ variable "min_size" {
   default = 1
 }
 
-variable "petlinic_sg"
+variable "petclinic_sg"
   type = string
 }
