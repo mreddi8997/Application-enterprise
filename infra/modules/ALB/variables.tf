@@ -75,7 +75,7 @@ variable "alb_listener_rule_path_pattern" {
 }
 
 variable "subnet_ids"
-  type = string
+  type = list(string)
 }
 
 variable "petclinic_Sg"
