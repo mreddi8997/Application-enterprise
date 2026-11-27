@@ -1,7 +1,7 @@
 resource "aws_security_group" "petclinic_sg" {
   name        = "petclinic_sg"
   description = "Security group for Petclinic application"
-  vpc_id      = aws_vpc.main.id
+  vpc_id      = var.vpc_id
 
   ingress {
     from_port   = 8080
@@ -19,4 +19,7 @@ resource "aws_security_group" "petclinic_sg" {
 
 output "petclinic_sg" {
   value = aws_security_group.petclinic_sg.id
+}
+variable "var.vpc_id" {
+  type = string
 }
