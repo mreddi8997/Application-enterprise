@@ -32,6 +32,7 @@ module "ASG" {
 
 petclinic_sg = module.SG.petclinic_sg.id
 instance_type = t3.micro
+vpc_zone_identifier = [module.vpc.public_subnet_ids]
 }
 
 module "cloudwatch" {
