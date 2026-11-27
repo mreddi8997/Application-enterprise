@@ -12,21 +12,26 @@ module "rds" {
   vpc_id                      = module.vpc.vpc_id
   vpc_name                    = module.vpc.vpc_name
   rds_db_subnet_ids           = module.vpc.rds_subnet_ids
-  rds_allowed_security_groups = [aws_security_group.petclinic_sg.id]
+  rds_allowed_security_groups = [module.SG.petclinic_sg.id]
 
   rds_db_name  = "petclinic_lab"
   rds_username = "petclinic_admin"
 }
 
 module "alb" {
-  source = ./modules/ALB
+  source = "./modules/ALB"
 }
 
 module "ASG" {
-  source = ./modules/ASG
+  source = "./modules/ASG"
+
+petclinic_sg_id = module.SG.petclinic_sg.id
 }
 
 module "cloudwatch" {
-  source = ./modules/cloudwatch
+  source = "./modules/cloudwatch"
 }
 
+module "SG" {
+  source = "./modules/SG"
+}
