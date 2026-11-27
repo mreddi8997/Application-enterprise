@@ -73,3 +73,11 @@ variable "alb_listener_rule_path_pattern" {
   type = string
   default = "/petclinic/*"
 }
+
+variable "public_subnets"
+  type = string
+}
+
+variable "petclinic_Sg"
+  type = string
+}
