@@ -27,3 +27,17 @@ variable "release_artifact_prefix" {
   type        = string
   default     = "petclinic/"
 }
+
+variable "route53_alias" {
+  description = "Optional public Route 53 A alias for the Petclinic ALB. Use the hosted zone ID and the full DNS record name."
+  type = object({
+    hosted_zone_id = string
+    record_name    = string
+  })
+  default = null
+
+  validation {
+    condition     = var.route53_alias == null ? true : try(trimspace(var.route53_alias.hosted_zone_id) != "" && trimspace(var.route53_alias.record_name) != "", false)
+    error_message = "Set both hosted_zone_id and record_name when configuring a Route 53 alias."
+  }
+}

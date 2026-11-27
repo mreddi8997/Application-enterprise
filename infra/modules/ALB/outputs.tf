@@ -6,3 +6,13 @@ output "target_group_arn" {
 output "url" {
   value = "http://${aws_lb.petclinic_alb.dns_name}"
 }
+
+output "dns_name" {
+  description = "DNS name of the Petclinic ALB."
+  value       = aws_lb.petclinic_alb.dns_name
+}
+
+output "zone_id" {
+  description = "Canonical hosted zone ID of the Petclinic ALB."
+  value       = aws_lb.petclinic_alb.zone_id
+}

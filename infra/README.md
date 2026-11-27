@@ -27,3 +27,18 @@ If you already have local state for these resources, use `init -migrate-state` i
 2. Have a database owner run the Petclinic [schema](../src/main/resources/db/postgres/schema.sql) and [seed data](../src/main/resources/db/postgres/data.sql) scripts. Create a separate application login with schema access, table permissions for the application, and sequence access. The application disables SQL initialization on startup so the runtime login needs no DDL permissions.
 3. Populate the secret identified by `petclinic_database_secret_arn` in Secrets Manager with the application login's `username` and `password` as JSON string fields. The instance role reads this secret on each service start. Petclinic uses the `postgres` profile and verifies the RDS server certificate.
 4. If the SSM deployment downloads from S3, set `release_bucket_name` and, if needed, `release_artifact_prefix` before planning. The default prefix is `petclinic/`, matching the release export in `buildspec.yaml`. If that bucket uses a customer-managed KMS key for the artifacts, the instance role also needs decrypt access to that key. Deploy with the existing SSM workflow, which restarts `petclinic.service`, and check that the ALB target is healthy.
+
+## Use a custom domain
+
+To publish the ALB under a custom hostname, add this block to `infra/terraform.tfvars`. Use the ID of your existing public Route 53 hosted zone and a full DNS name within that zone.
+
+```hcl
+route53_alias = {
+  hosted_zone_id = "Z0123456789EXAMPLE"
+  record_name    = "petclinic.example.com"
+}
+```
+
+Check that the domain is delegated to this public hosted zone. Terraform creates an `A` alias to the ALB and returns the URL in `petclinic_domain_url`. If the A record already exists, import it into the existing Terraform state before applying. Leave `route53_alias` unset to use the ALB URL directly.
+
+The current lab listener serves HTTP. HTTPS requires an ALB listener on port 443 with an ACM certificate covering the hostname.

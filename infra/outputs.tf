@@ -24,3 +24,8 @@ output "petclinic_database_secret_arn" {
   description = "Secret ARN for the application's separate PostgreSQL login."
   value       = module.petclinic_secret.secret_arn
 }
+
+output "petclinic_domain_url" {
+  description = "HTTP URL of the optional Route 53 alias."
+  value       = var.route53_alias == null ? null : "http://${trimsuffix(aws_route53_record.petclinic[0].fqdn, ".")}"
+}
