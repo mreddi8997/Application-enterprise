@@ -3,7 +3,7 @@ resource "aws_lb" "petclinic_alb" {
   internal           = false
   load_balancer_type = "var.load_balancer_type"
   security_groups    = [var.petclinic_Sg]
-  subnets            = [var.subnet_ids]
+  subnets            = var.subnet_ids
 
   enable_deletion_protection = false
 }
