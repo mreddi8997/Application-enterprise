@@ -74,7 +74,7 @@ variable "alb_listener_rule_path_pattern" {
   default = "/petclinic/*"
 }
 
-variable "public_subnets"
+variable "subnet_ids"
   type = string
 }
 
