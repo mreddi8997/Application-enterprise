@@ -25,7 +25,7 @@ module "alb" {
 module "ASG" {
   source = "./modules/ASG"
 
-petclinic_sg_id = module.SG.petclinic_sg.id
+petclinic_sg = module.SG.petclinic_sg.id
 }
 
 module "cloudwatch" {
