@@ -1,52 +1,48 @@
 variable "scaling_adjustment" {
-  type = number
+  type    = number
   default = 1
 }
 
 variable "adjustment_type" {
-  type = string
+  type    = string
   default = "ChangeInCapacity"
 }
 
 variable "cooldown" {
-  type = number
+  type    = number
   default = 300
 }
 
 variable "comparison_operator" {
-  type = string
+  type    = string
   default = "GreaterThanOrEqualToThreshold"
 }
 
 variable "evaluation_periods" {
-  type = number
+  type    = number
   default = 2
 }
 
 variable "metric_name" {
-  type = string
+  type    = string
   default = "CPUUtilization"
 }
 
 variable "period" {
-  type = number
-  default = 120
+  type    = number
+  default = 300
 }
 
 variable "statistic" {
-  type = string
+  type    = string
   default = "Average"
 }
 
 variable "threshold" {
-  type = number
+  type    = number
   default = 80
 }
 
-variable "name" {
-  type = string
-}
-
-variable "autoscaling_group_name"
+variable "autoscaling_group_name" {
   type = string
 }
