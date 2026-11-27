@@ -20,6 +20,10 @@ module "rds" {
 
 module "alb" {
   source = "./modules/ALB"
+
+subnet_ids = module.vpc.public_subnet_ids
+vpc = module.vpc.vpc_id
+
 }
 
 module "ASG" {
