@@ -1,9 +1,9 @@
 resource "aws_autoscaling_policy" "main" {
-  name                   = ""
+  name                   = "autoscaling_policy_${var.name}"
   scaling_adjustment     = var.scaling_adjustment
   adjustment_type        = "var.adjustment_type"
   cooldown               = var.cooldown
-  autoscaling_group_name = aws_autoscaling_group.petclinic_app_asg.name
+  autoscaling_group_name = var.autoscaling_group_name
 }
 
 resource "aws_cloudwatch_metric_alarm" "main" {
@@ -17,7 +17,7 @@ resource "aws_cloudwatch_metric_alarm" "main" {
   threshold           = var.threshold
 
   dimensions = {
-    AutoScalingGroupName = aws_autoscaling_group.petclinic_app_asg.name
+    AutoScalingGroupName = var.autoscaling_group_name
   }
 
   alarm_description = "This metric monitors ec2 cpu utilization"
